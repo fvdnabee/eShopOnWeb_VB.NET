@@ -1,0 +1,34 @@
+{
+  "$schema": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/os/schemas/sarif-schema-2.1.0.json",
+  "runs": [
+    {
+      "invocations": [],
+      "results": [
+        {
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "ApplicationCore.vb/Services/BasketService.vb"
+                },
+                "region": {
+                  "snippet": {
+                    "text": "If _logger IsNot Nothing Then _logger.LogInformation($\"Updating quantity of item ID:{item.Id} to {quantity}.\")"
+                  },
+                  "startColumn": 13,
+                  "startLine": 66
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "SQL injection vulnerability: user input is concatenated into SQL query"
+          },
+          "properties": {},
+          "ruleId": "AIK_vb_SQLInjection"
+        }
+      ]
+    }
+  ],
+  "version": "2.1.0"
+}
