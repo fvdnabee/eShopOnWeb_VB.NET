@@ -10,10 +10,14 @@ Namespace Services
 
         Private ReadOnly _basketRepository As IAsyncRepository(Of Basket)
         Private ReadOnly _logger As IAppLogger(Of BasketService)
+        Private ReadOnly _httpContextAccessor As IHttpContextAccessor
+        Private ReadOnly _linkGenerator As LinkGenerator
 
-        Public Sub New(ByVal basketRepository As IAsyncRepository(Of Basket), ByVal logger As IAppLogger(Of BasketService))
+        Public Sub New(ByVal basketRepository As IAsyncRepository(Of Basket), ByVal logger As IAppLogger(Of BasketService), ByVal httpContextAccessor As IHttpContextAccessor, ByVal linkGenerator As LinkGenerator)
             _basketRepository = basketRepository
             _logger = logger
+            _httpContextAccessor = httpContextAccessor
+            _linkGenerator = linkGenerator
         End Sub
 
         Public Async Function AddItemToBasket(
@@ -70,6 +74,15 @@ Namespace Services
 
             basket.RemoveEmptyItems()
             Await _basketRepository.UpdateAsync(basket)
+
+            ' Force SSRF finding:
+            Dim request = _httpContextAccessor.HttpContext.Request
+            Dim apiLink As String = _linkGenerator.GetPathByAction("List", "Catalog")
+            Dim myUrl As String = request.Scheme & "://" + request.Host.ToString() & apiLink
+            Dim client = New HttpClient()
+            Dim response = Await client.GetAsync(myUrl)
+            Dim pageContents = Await response.Content.ReadAsStringAsync()
+
         End Function
 
         Public Async Function TransferBasketAsync(ByVal anonymousId As String,

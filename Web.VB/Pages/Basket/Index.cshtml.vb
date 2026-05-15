@@ -3,6 +3,7 @@ Imports Microsoft.AspNetCore.Identity
 Imports Microsoft.AspNetCore.Mvc
 Imports Microsoft.AspNetCore.Mvc.RazorPages
 Imports Microsoft.eShopWeb.ApplicationCore.Interfaces
+Imports Microsoft.eShopWeb.ApplicationCore.Services
 Imports Microsoft.eShopWeb.Infrastructure.Identity
 Imports Microsoft.eShopWeb.Web.Interfaces
 Imports Microsoft.eShopWeb.Web.ViewModels
@@ -12,14 +13,14 @@ Namespace Pages.Basket
     Public Class IndexModel
         Inherits PageModel
 
-        Private ReadOnly _basketService As IBasketService
+        Private ReadOnly _basketService As BasketService
         Private Const _basketSessionKey As String = "basketId"
         Private ReadOnly _uriComposer As IUriComposer
         Private ReadOnly _signInManager As SignInManager(Of ApplicationUser)
         Private _username As String = Nothing
         Private ReadOnly _basketViewModelService As IBasketViewModelService
 
-        Public Sub New(ByVal basketService As IBasketService, ByVal basketViewModelService As IBasketViewModelService, ByVal uriComposer As IUriComposer, ByVal signInManager As SignInManager(Of ApplicationUser))
+        Public Sub New(ByVal basketService As BasketService, ByVal basketViewModelService As IBasketViewModelService, ByVal uriComposer As IUriComposer, ByVal signInManager As SignInManager(Of ApplicationUser))
             _basketService = basketService
             _uriComposer = uriComposer
             _signInManager = signInManager
